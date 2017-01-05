@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">视频列表</h1>
+	</header>
+	
+	<div class="mui-content">
+		<!--
+        	作者：415750961@qq.com
+        	时间：2017-01-04
+        	描述：搜索框
+        -->
+		<div class="mui-input-row mui-search">
+		    <input type="search" id="search" class="mui-input-clear" placeholder="请输入要搜索的视频">
+		</div>
+		<!--视图列表-->
+		<ul id="tplCon" class="mui-table-view">
+	    <script type="text/template" id="tpl">	
+		    	<% _.each(videos,function(video){ %>
+			    <li class="mui-table-view-cell mui-media">
+			        <a class="mui-navigate-right" href="playvideo.html?vid=<%= video.vid %>">
+			            <img class="mui-media-object mui-pull-left" src="<%= video.vimgurl %>">
+			            <div class="mui-media-body">
+			                <%= video.vtitle %>
+			                <p class='mui-ellipsis'><%= video.vsummary %></p>
+			            </div>
+			        </a>
+			    </li>
+			    <% }); %>	
+	    </script>
+	    </ul>
+	</div>
+</body>
+<script type="text/javascript" src="js/underscore-min.js"></script>
+<script type="text/javascript" src="js/ip.js"></script>
+<script type="text/javascript">
+	var tplCon = document.querySelector("#tplCon");
+	var tpl = document.querySelector("#tpl");
+	var search = document.querySelector("#search");
+	http://127.0.0.1:6688/api/getVideoList
+	function getData(){
+		mui.getJSON("http://"+ip+"/api/getVideoList?like="+search.value,{},function(datas){
+			var fn = _.template(tpl.innerHTML);
+			var html = fn({videos:datas});
+			tplCon.innerHTML = html;
+		});
+	}
+	getData();
+	search.addEventListener("keyup",function(e){
+		console.log(e.keyCode);
+		if(e.keyCode == 13){
+			getData();
+		}
+	});
+	
+</script>
+</html>

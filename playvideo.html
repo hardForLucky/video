@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/mui.css"/>
+</head>
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+        <h1 class="mui-title">视频详情</h1>
+    </header>
+    
+   <div class="mui-content">
+   		<!--视频标题-->
+   		<div id="vtitle" style="margin: 10px auto 0; width: 100%;text-align: center;line-height: 30px;height: 30px;color: hotpink;">
+   			
+   		</div>
+   		<!--视频播放-->
+   		<div id="mod_player_skin">&nbsp;</div>
+   		
+        <!--选项卡-->
+	    <div style="padding: 10px 10px;">
+			<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-primary">
+				<a class="mui-control-item mui-active" href="#item1">
+			简要描述
+		</a>
+				<a class="mui-control-item" href="#item2">
+			详情介绍
+		</a>
+				
+			</div>
+		</div>
+	    <div>
+			<div id="item1" class="mui-control-content mui-active">
+				
+			</div>
+			<div id="item2" class="mui-control-content">
+				
+			</div>
+		</div>
+   </div>
+    
+    <script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+    <script language="javascript" src="http://qzs.qq.com/tencentvideo_v1/js/tvp/tvp.player.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    mui.init()
+    </script>
+    <script type="text/javascript" src="js/ip.js"></script>
+    <script type="text/javascript">
+    	//获取传送过来的vid
+    	var search = window.location.search;
+    	var vid = search.split("=")[1];
+    	console.log(vid);
+    	//获取页面元素
+    	var vtitle = document.querySelector('#vtitle');
+    	var item1 = document.querySelector('#item1');
+    	var item2 = document.querySelector('#item2');
+    	
+    	//从服务器端获取数据填充文本内容
+    	mui.getJSON("http://"+ip+"/api/getVideoById/"+vid,{},function(datas){
+    		var data = datas[0];
+			vtitle.innerHTML = data.vtitle;
+			item1.innerHTML = data.vsummary;
+			item2.innerHTML = data.vremark;
+			
+			//视频播放器
+			//定义视频对象
+            var videoPlayer = new tvp.VideoInfo();
+            //向视频对象传入视频vid "c0146k6imdf"
+            videoPlayer.setVid(data.vvideoid);
+            //定义播放器对象
+            var player = new tvp.Player('100%', "100%");
+            //设置播放器初始化时加载的视频
+            player.setCurVideo(videoPlayer);
+            //设置精简皮肤，仅点播有效
+            //player.addParam("flashskin", "http://imgcache.qq.com/minivideo_v1/vd/res/skins/TencentPlayerMiniSkin.swf");
+            //输出播放器,参数就是上面div的id，希望输出到哪个HTML元素里，就写哪个元素的id
+            player.addParam("autoplay","1");
+            player.addParam("wmode","transparent");
+            //player.addParam("pic","http://img1.gtimg.com/ent/pics/hv1/75/182/1238/80547435.jpg");
+            player.write("mod_player_skin");
+		});
+    	
+    </script>
+</body>
+</html>
