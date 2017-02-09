@@ -59,7 +59,7 @@
     	var item2 = document.querySelector('#item2');
     	
     	//从服务器端获取数据填充文本内容
-    	mui.getJSON("http://"+ip+"/api/getVideoById/"+vid,{},function(datas){
+    	mui.getJSON("https://"+ip+"/api/getVideoById/"+vid,{},function(datas){
     		var data = datas[0];
 			vtitle.innerHTML = data.vtitle;
 			item1.innerHTML = data.vsummary;

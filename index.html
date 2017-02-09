@@ -51,7 +51,7 @@
 	var search = document.querySelector("#search");
 	http://127.0.0.1:6688/api/getVideoList
 	function getData(){
-		mui.getJSON("http://"+ip+"/api/getVideoList?like="+search.value,{},function(datas){
+		mui.getJSON("https://"+ip+"/api/getVideoList?like="+search.value,{},function(datas){
 			var fn = _.template(tpl.innerHTML);
 			var html = fn({videos:datas});
 			tplCon.innerHTML = html;
